@@ -4,6 +4,7 @@ import {List} from "./List";
 import {useEffect, useState} from "react";
 import qs from "qs";
 import {cleanObject, useDebounce, useMount} from "../../utils";
+import {useHttp} from "../../utils/http";
 
 
 const apiUrl = process.env.REACT_APP_API_URL
@@ -16,12 +17,12 @@ export const ProjectListScreen = () => {
     personId: ''
   });
 
-  const [list, setList] = useState([]);
-
   const debounceParam = useDebounce(param,2000)
-
+  const [list, setList] = useState([]);
+  const client = useHttp()
 
   useEffect(() => {
+
     fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`).then(async (response) => { //函数里面的内容是异步调用的，所以要用async，里面用await去接收
       if (response.ok) {
         setList(await response.json());  //这里这样就省去了一个 .then()的会回调去获取值
