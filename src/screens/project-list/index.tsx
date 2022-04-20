@@ -22,20 +22,11 @@ export const ProjectListScreen = () => {
   const client = useHttp()
 
   useEffect(() => {
-
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`).then(async (response) => { //函数里面的内容是异步调用的，所以要用async，里面用await去接收
-      if (response.ok) {
-        setList(await response.json());  //这里这样就省去了一个 .then()的会回调去获取值
-      }
-    });
+    client('projects',{data:cleanObject(debounceParam)}).then(setList)
   }, [debounceParam]);
 
   useMount(()=>{
-    fetch(`${apiUrl}/users`).then(async (response) => { //函数里面的内容是异步调用的，所以要用async，里面用await去接收
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    client('users').then(setUsers)
   })
 
 
