@@ -41,6 +41,7 @@ export const http = async (endpoint: string, {data, token, headers, ...customCon
     })
 }
 
+//Parameters<typeof http>   实现了把http的函数参数提取出来作为一个类型
 export const useHttp = () => {
   const {user} = useAuth()
   return (...[endpoint, config]: Parameters<typeof http>) => http(endpoint, {...config, token:user?.token})
